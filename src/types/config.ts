@@ -109,8 +109,8 @@ export type ExpressiveCodeConfig = {
 export type CommentConfig = {
 	/** 是否启用评论功能 */
 	enable: boolean;
-	/** 评论系统提供商：giscus、utterances 或 disqus */
-	provider: "giscus" | "utterances" | "disqus";
+	/** 评论系统提供商：giscus、utterances、disqus 或 twikoo */
+	provider: "giscus" | "utterances" | "disqus" | "twikoo";
 	/** Giscus 评论系统配置（使用 Giscus 时需要） */
 	giscus?: {
 		/** GitHub 仓库名，格式：用户名/仓库名 */
@@ -162,5 +162,26 @@ export type CommentConfig = {
 	disqus?: {
 		/** Disqus 站点 shortname，从 Disqus 管理面板获取 */
 		shortname: string;
+	};
+	/** Twikoo 评论系统配置（使用 Twikoo 时需要） */
+	twikoo?: {
+		/** Twikoo 环境 ID，从 Twikoo 管理面板获取 */
+		envId: string;
+		/** Twikoo API 地址，如部署在 Vercel 上的地址 */
+		apiUrl?: string;
+		/** 评论区容器 ID */
+		el?: string;
+		/** 评论映射方式：pathname、url 或 title */
+		path?: string;
+		/** 语言 */
+		lang?: string;
+		/** 主题：light 或 dark */
+		theme?: "light" | "dark" | "auto";
+		/** 占位符 */
+		placeholder?: string;
+		/** 管理员邮箱 */
+		admin?: string;
+		/** 评论数量限制 */
+		count?: number;
 	};
 };

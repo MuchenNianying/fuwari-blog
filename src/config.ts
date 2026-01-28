@@ -107,12 +107,12 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 /**
  * 评论功能配置
- * 支持 Giscus、Utterances 和 Disqus 三种评论系统
+ * 支持 Giscus、Utterances、Disqus 和 Twikoo 四种评论系统
  */
 export const commentConfig: CommentConfig = {
 	/** 是否启用评论功能 */
 	enable: true,
-	/** 评论系统提供商：giscus、utterances 或 disqus */
+	/** 评论系统提供商：giscus、utterances、disqus 或 twikoo */
 	provider: "giscus",
 	/** Giscus 评论系统配置 */
 	giscus: {
@@ -155,6 +155,27 @@ export const commentConfig: CommentConfig = {
 	/** Disqus 评论系统配置 */
 	disqus: {
 		/** Disqus 站点 shortname，从 Disqus 管理面板获取 */
-		shortname: "mcny",
+		shortname: "",
+	},
+	/** Twikoo 评论系统配置 */
+	twikoo: {
+		/** Twikoo 环境 ID，从 Twikoo 管理面板获取 */
+		envId: "",
+		/** Twikoo API 地址，如部署在 Vercel 上的地址 */
+		apiUrl: "",
+		/** 评论区容器 ID */
+		el: "twikoo-comments",
+		/** 评论映射方式 */
+		path: "pathname",
+		/** 语言 */
+		lang: "zh-CN",
+		/** 主题 */
+		theme: "auto",
+		/** 占位符 */
+		placeholder: "写下你的评论...",
+		/** 管理员邮箱 */
+		admin: "",
+		/** 评论数量限制 */
+		count: 10,
 	},
 };

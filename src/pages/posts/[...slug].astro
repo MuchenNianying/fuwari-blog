@@ -195,6 +195,29 @@ const jsonLd = {
                         </noscript>
                     </div>
                 )}
+                
+                <!-- Twikoo 评论系统 -->
+                {commentConfig.provider === 'twikoo' && commentConfig.twikoo && (
+                    <div class="twikoo-comments">
+                        <div id={commentConfig.twikoo.el || 'twikoo-comments'}></div>
+                        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
+                        <script is:inline set:html={`
+                            document.addEventListener('DOMContentLoaded', function() {
+                                twikoo.init({
+                                    envId: '${commentConfig.twikoo.envId}',
+                                    ${commentConfig.twikoo.apiUrl ? `apiUrl: '${commentConfig.twikoo.apiUrl}',` : ''}
+                                    el: '#${commentConfig.twikoo.el || 'twikoo-comments'}',
+                                    ${commentConfig.twikoo.path ? `path: '${commentConfig.twikoo.path}',` : ''}
+                                    ${commentConfig.twikoo.lang ? `lang: '${commentConfig.twikoo.lang}',` : ''}
+                                    ${commentConfig.twikoo.theme ? `theme: '${commentConfig.twikoo.theme}',` : ''}
+                                    ${commentConfig.twikoo.placeholder ? `placeholder: '${commentConfig.twikoo.placeholder}',` : ''}
+                                    ${commentConfig.twikoo.admin ? `admin: ['${commentConfig.twikoo.admin}'],` : ''}
+                                    ${commentConfig.twikoo.count ? `count: ${commentConfig.twikoo.count},` : ''}
+                                });
+                            });
+                        `}></script>
+                    </div>
+                )}
             </div>
         </div>
     )}
