@@ -12,10 +12,75 @@ const currentYear = new Date().getFullYear();
 <div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6">
     <div class="transition text-50 text-sm text-center">
         &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a><br>
+        <!-- <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
+        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a><br> -->
         Powered by
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> &
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
+        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a><br>
+        <span id="running-time">本站已运行：...</span>
     </div>
+    <script>
+        // 站点创建时间（2026年1月28日）
+        const startTime = new Date('2026-01-28T13:14:00');
+        
+        // 根据当前时间获取对应的emoji
+        function getTimeEmoji() {
+            const now = new Date();
+            const hour = now.getHours();
+            
+            if (hour >= 5 && hour < 9) {
+                // 早晨：太阳刚升起来
+                return '🌄';
+            } else if (hour >= 9 && hour < 17) {
+                // 中午：大太阳
+                return '☀️';
+            } else if (hour >= 17 && hour < 19) {
+                // 傍晚：落日
+                return '🌅';
+            } else {
+                // 晚上：月亮
+                return '🌙';
+            }
+        }
+        
+        // 更新站点运行时间
+        function updateRunningTime() {
+            const now = new Date();
+            const diff = now - startTime;
+            
+            // 计算年、月、天、小时、分钟、秒
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // 获取当前时间对应的emoji
+            const emoji = getTimeEmoji();
+            
+            // 格式化显示
+            let ageText = `${emoji} 本站已运行：`;
+            if (years > 0) {
+                ageText += `${years} 年 `;
+            }
+            if (months > 0) {
+                ageText += `${months} 月 `;
+            }
+            ageText += `${days} 天 `;
+            ageText += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // 更新DOM
+            const runningTimeElement = document.getElementById('running-time');
+            if (runningTimeElement) {
+                runningTimeElement.textContent = ageText;
+            }
+        }
+        
+        // 初始更新
+        updateRunningTime();
+        
+        // 每秒更新一次
+        setInterval(updateRunningTime, 1000);
+    </script>
 </div>

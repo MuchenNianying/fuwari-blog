@@ -74,9 +74,14 @@ export const profileConfig: ProfileConfig = {
 			url: "https://space.bilibili.com/17346728",
 		},
 		{
-			name: "YouTube",
-			icon: "fa6-brands:youtube",
-			url: "https://www.youtube.com/@MuchenNianying",
+			name: "Email",
+			icon: "fa6-regular:envelope",
+			url: "mailto:muchennianying@gmail.com",
+		},
+		{
+			name: "Rss",
+			icon: "material-symbols:rss-feed",
+			url: "/rss.xml",
 		},
 		// {
 		// 	name: "Twitter",
