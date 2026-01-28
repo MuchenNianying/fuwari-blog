@@ -11,7 +11,7 @@ import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import PostMetadata from "../../components/PostMeta.astro";
-import { profileConfig, siteConfig } from "../../config";
+import { commentConfig, profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
 
 export async function getStaticPaths() {
@@ -110,6 +110,94 @@ const jsonLd = {
 
         </div>
     </div>
+
+    <!-- 评论功能 -->
+    {commentConfig.enable && (
+        <div class="rounded-[var(--radius-large)] overflow-hidden relative mb-4 onload-animation">
+            <div class="card-base z-10 px-6 md:px-9 py-6 relative w-full">
+                <h3 class="text-xl font-bold mb-4 text-black/90 dark:text-white/90">
+                    {i18n(I18nKey.comments)}
+                </h3>
+                
+                <!-- Giscus 评论系统 -->
+                {commentConfig.provider === 'giscus' && commentConfig.giscus && (
+                    <div class="giscus-comments">
+                        <script
+                            src="https://giscus.app/client.js"
+                            data-repo={commentConfig.giscus.repo}
+                            data-repo-id={commentConfig.giscus.repoId}
+                            data-category={commentConfig.giscus.category}
+                            data-category-id={commentConfig.giscus.categoryId}
+                            data-mapping={commentConfig.giscus.mapping}
+                            data-reactions-enabled={commentConfig.giscus.reactionsEnabled}
+                            data-emit-metadata="0"
+                            data-input-position={commentConfig.giscus.inputPosition}
+                            data-theme={commentConfig.giscus.theme}
+                            data-lang={commentConfig.giscus.lang}
+                            data-loading={commentConfig.giscus.loading}
+                            crossorigin="anonymous"
+                            async
+                        ></script>
+                    </div>
+                )}
+                
+                <!-- Utterances 评论系统 -->
+                {commentConfig.provider === 'utterances' && commentConfig.utterances && (
+                    <div class="utterances-comments">
+                        <script
+                            src="https://utteranc.es/client.js"
+                            repo={commentConfig.utterances.repo}
+                            issue-term={commentConfig.utterances.issueTerm}
+                            label={commentConfig.utterances.label}
+                            theme={commentConfig.utterances.theme}
+                            crossorigin={commentConfig.utterances.crossorigin}
+                            async
+                        ></script>
+                    </div>
+                )}
+                
+                <!-- Disqus 评论系统 -->
+                {commentConfig.provider === 'disqus' && commentConfig.disqus && (
+                    <div class="disqus-comments">
+                        <div id="disqus_thread"></div>
+                        <script is:inline>
+                            var disqus_config = function () {
+                                this.page.url = '{url}';
+                                this.page.identifier = '{slug}';
+                                this.page.title = '{title}';
+                            };
+                            
+                            (function() {
+                                var d = document, s = d.createElement('script');
+                                s.src = 'https://{shortname}.disqus.com/embed.js';
+                                s.setAttribute('data-timestamp', +new Date());
+                                (d.head || d.body).appendChild(s);
+                            })();
+                        </script>
+                        <script is:inline set:html={`
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var scripts = document.querySelectorAll('script');
+                                for (var i = 0; i < scripts.length; i++) {
+                                    var script = scripts[i];
+                                    if (script.textContent && script.textContent.includes('disqus_config')) {
+                                        script.textContent = script.textContent
+                                            .replace('{url}', '${Astro.url}')
+                                            .replace('{slug}', '${entry.slug}')
+                                            .replace('{title}', '${entry.data.title}')
+                                            .replace('{shortname}', '${commentConfig.disqus.shortname}');
+                                        break;
+                                    }
+                                }
+                            });
+                        `}></script>
+                        <noscript>
+                            Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+                        </noscript>
+                    </div>
+                )}
+            </div>
+        </div>
+    )}
 
     <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
         <a href={entry.data.nextSlug ? getPostUrlBySlug(entry.data.nextSlug) : "#"}

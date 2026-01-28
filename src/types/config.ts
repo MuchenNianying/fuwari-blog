@@ -36,6 +36,7 @@ export type SiteConfig = {
 	};
 
 	favicon: Favicon[];
+	comments?: CommentConfig;
 };
 
 export type Favicon = {
@@ -99,4 +100,67 @@ export type BlogPostData = {
 
 export type ExpressiveCodeConfig = {
 	theme: string;
+};
+
+/**
+ * 评论功能配置类型
+ * 支持 Giscus、Utterances 和 Disqus 三种评论系统
+ */
+export type CommentConfig = {
+	/** 是否启用评论功能 */
+	enable: boolean;
+	/** 评论系统提供商：giscus、utterances 或 disqus */
+	provider: "giscus" | "utterances" | "disqus";
+	/** Giscus 评论系统配置（使用 Giscus 时需要） */
+	giscus?: {
+		/** GitHub 仓库名，格式：用户名/仓库名 */
+		repo: string;
+		/** 仓库 ID，从 Giscus 配置页面获取 */
+		repoId: string;
+		/** 评论分类名称 */
+		category: string;
+		/** 分类 ID，从 Giscus 配置页面获取 */
+		categoryId: string;
+		/** 评论映射方式：url、title、og:title 或 pathname */
+		mapping: "url" | "title" | "og:title" | "pathname";
+		/** 是否启用反应表情：1 启用，0 禁用 */
+		reactionsEnabled: "1" | "0";
+		/** 数据严格模式：1 启用，0 禁用 */
+		dataStrict: "1" | "0";
+		/** 输入框位置：top 或 bottom */
+		inputPosition: "top" | "bottom";
+		/** 主题：light、dark、transparent_dark 或 preferred_color_scheme */
+		theme: "light" | "dark" | "transparent_dark" | "preferred_color_scheme";
+		/** 语言 */
+		lang: string;
+		/** 加载方式：lazy 或 eager */
+		loading: "lazy" | "eager";
+	};
+	/** Utterances 评论系统配置（使用 Utterances 时需要） */
+	utterances?: {
+		/** GitHub 仓库名，格式：用户名/仓库名 */
+		repo: string;
+		/** 评论映射方式：pathname、url、title 或 og:title */
+		issueTerm: "pathname" | "url" | "title" | "og:title";
+		/** 评论标签 */
+		label: string;
+		/** 主题 */
+		theme:
+			| "github-light"
+			| "github-dark"
+			| "preferred-color-scheme"
+			| "github-dark-orange"
+			| "icy-dark"
+			| "dark-blue"
+			| "photon-dark"
+			| "boxy-light"
+			| "gruvbox-dark";
+		/** 跨域设置：anonymous 或 use-credentials */
+		crossorigin: "anonymous" | "use-credentials";
+	};
+	/** Disqus 评论系统配置（使用 Disqus 时需要） */
+	disqus?: {
+		/** Disqus 站点 shortname，从 Disqus 管理面板获取 */
+		shortname: string;
+	};
 };
